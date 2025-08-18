@@ -1,0 +1,2 @@
+- use bun and bunjs, not node or npm
+- 
