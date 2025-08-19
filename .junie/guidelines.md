@@ -1,2 +1,6 @@
 - use bun and bunjs, not node or npm
+- program as modular as possible
+- create reusable components in the components folder
+- create page-specific components in the containers folder
+- make all visible text to the user in portuguese
 - 
