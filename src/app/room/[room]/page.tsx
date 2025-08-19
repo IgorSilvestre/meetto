@@ -1,7 +1,6 @@
 "use client"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import {useParams, useRouter, useSearchParams} from "next/navigation"
-// @ts-ignore
 import RoomContainer from "../../../containers/RoomContainer"
 import "@livekit/components-styles/prefabs/index.css"
 
@@ -82,7 +81,7 @@ export default function RoomPage() {
     }, [handleConnect])
 
     return (
-        <div className="container-full">
+        <div className="container-full h-dvh overflow-hidden">
             <header className="header" role="banner">
                 <strong className="text-sm">Sala: {roomName}</strong>
                 <span className="muted">URL para compartilhar:</span>
@@ -108,7 +107,7 @@ export default function RoomPage() {
                     </form>
                 </section>
             ) : (
-                <section className="flex-1 min-h-0">
+                <section className="flex-1 min-h-0 overflow-hidden">
                     <RoomContainer token={token} serverUrl={wsUrl ?? undefined} />
                 </section>
             )}

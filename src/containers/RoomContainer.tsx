@@ -29,7 +29,7 @@ export default function RoomContainer({ token, serverUrl }: RoomContainerProps) 
 
   return (
     <RoomContext.Provider value={room}>
-      <div data-lk-theme="default" style={{ height: "100%" }}>
+      <div data-lk-theme="default" style={{ height: "100%", width: "100%", minHeight: 0, overflow: "hidden" }}>
         <VideoConference chatMessageFormatter={formatChatMessageLinks} />
         <RoomAudioRenderer />
       </div>
