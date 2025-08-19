@@ -75,42 +75,27 @@ export default function RoomPage() {
         }
     }, [participantName, roomName])
 
-    const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        void handleConnect()
-    }, [handleConnect])
-
     return (
-        <div className="container-full h-dvh overflow-hidden">
-            <header className="header" role="banner">
-                <strong className="text-sm">Sala: {roomName}</strong>
-                <span className="muted">URL para compartilhar:</span>
-                <input id="share-url" readOnly value={shareUrl} onFocus={(e) => e.currentTarget.select()} className="input flex-1 min-w-60" aria-label="URL da sala para compartilhar" />
-                <button className="btn" type="button" onClick={handleCopyShare} aria-live="polite">{copied ? "Copiado" : "Copiar"}</button>
-                <div className="row ml-auto gap-2">
-                    <span className="muted small" aria-live="polite">{now ? now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""}</span>
-                    {token && <span className="muted small">Você: {participantName || "(anônimo)"}</span>}
-                </div>
-            </header>
-
+        <>
             {!token ? (
-                <section className="w-full max-w-xl mx-auto p-6 grid gap-3">
-                    <h2 className="m-0 text-lg">Digite seu nome para entrar</h2>
-                    <form onSubmit={onSubmit} className="stack" aria-labelledby="join-heading">
-                        <label className="stack" htmlFor="name-input">
-                            <span>Seu nome</span>
-                            <input id="name-input" type="text" placeholder="Seu nome" value={participantName} onChange={(e) => setParticipantName(e.target.value)} className="input" autoFocus aria-describedby={error ? "name-error" : undefined} />
-                        </label>
-                        {error && <div id="name-error" className="error" role="alert">{error}</div>}
-                        <button type="submit" className="btn primary" disabled={connecting}>{connecting ? "Conectando..." : "Entrar na sala"}</button>
-                        <p className="small muted">Ao entrar, sua câmera e microfone serão ativados. Você também pode compartilhar a tela e usar o bate-papo.</p>
-                    </form>
-                </section>
+                <p>Redirecionando...</p>
             ) : (
-                <section className="flex-1 min-h-0 overflow-hidden">
-                    <RoomContainer token={token} serverUrl={wsUrl ?? undefined} />
-                </section>
+                <div className="container-full h-dvh overflow-hidden">
+                    <header className="header" role="banner">
+                        <strong className="text-sm">Sala: {roomName}</strong>
+                        <span className="muted">URL para compartilhar:</span>
+                        <input id="share-url" readOnly value={shareUrl} onFocus={(e) => e.currentTarget.select()} className="input flex-1 min-w-60" aria-label="URL da sala para compartilhar" />
+                        <button className="btn" type="button" onClick={handleCopyShare} aria-live="polite">{copied ? "Copiado" : "Copiar"}</button>
+                        <div className="row ml-auto gap-2">
+                            <span className="muted small" aria-live="polite">{now ? now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""}</span>
+                            {token && <span className="muted small">Você: {participantName || "(anônimo)"}</span>}
+                        </div>
+                    </header>
+                    <section className="flex-1 min-h-0 overflow-hidden">
+                        <RoomContainer token={token} serverUrl={wsUrl ?? undefined} />
+                    </section>
+                </div>
             )}
-        </div>
+        </>
     )
 }
