@@ -20,8 +20,6 @@ export default function RoomPage() {
     const [token, setToken] = useState<string | null>(null)
     const [wsUrl, setWsUrl] = useState<string | null>(null)
     const [copied, setCopied] = useState(false)
-    const [showPeople, setShowPeople] = useState(false)
-    const [showChat, setShowChat] = useState(false)
     const [now, setNow] = useState<Date | null>(null)
 
     useEffect(() => {
@@ -91,30 +89,6 @@ export default function RoomPage() {
                 <input id="share-url" readOnly value={shareUrl} onFocus={(e) => e.currentTarget.select()} className="input flex-1 min-w-60" aria-label="URL da sala para compartilhar" />
                 <button className="btn" type="button" onClick={handleCopyShare} aria-live="polite">{copied ? "Copiado" : "Copiar"}</button>
                 <div className="row ml-auto gap-2">
-                    <button
-                        type="button"
-                        className={`btn ${showPeople ? "primary" : "ghost"}`}
-                        aria-pressed={showPeople}
-                        onClick={() => {
-                            setShowPeople(v => {
-                                const nv = !v
-                                if (nv) setShowChat(false)
-                                return nv
-                            })
-                        }}
-                    >Pessoas</button>
-                    <button
-                        type="button"
-                        className={`btn ${showChat ? "primary" : "ghost"}`}
-                        aria-pressed={showChat}
-                        onClick={() => {
-                            setShowChat(v => {
-                                const nv = !v
-                                if (nv) setShowPeople(false)
-                                return nv
-                            })
-                        }}
-                    >Bate-papo</button>
                     <span className="muted small" aria-live="polite">{now ? now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""}</span>
                     {token && <span className="muted small">Você: {participantName || "(anônimo)"}</span>}
                 </div>
