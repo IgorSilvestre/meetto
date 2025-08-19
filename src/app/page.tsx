@@ -7,12 +7,17 @@ export default function Home() {
   const [room, setRoom] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [commingFromSharedLink, setCommingFromSharedLink] = useState(false);
 
   useEffect(() => {
-    // Prefill name from localStorage if available
     try {
-      const saved = typeof window !== "undefined" ? window.localStorage.getItem("displayName") : null;
-      if (saved) setName(saved);
+        // Get room from URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const roomParam = urlParams.get('room');
+        if (roomParam) {
+            setRoom(roomParam);
+            setCommingFromSharedLink(true);
+        }
     } catch {}
   }, []);
 
@@ -26,11 +31,6 @@ export default function Home() {
         setError("Please enter both room and username.");
         return;
       }
-      try {
-        if (typeof window !== "undefined") {
-          window.localStorage.setItem("displayName", n);
-        }
-      } catch {}
       router.push(`/room/${encodeURIComponent(r)}?name=${encodeURIComponent(n)}`);
     },
     [router, room, name]
@@ -50,9 +50,10 @@ export default function Home() {
               id="room-input"
               type="text"
               value={room}
+              disabled={commingFromSharedLink}
               onChange={(e) => setRoom(e.target.value)}
               placeholder="e.g. team-sync"
-              className="input"
+              className={`${commingFromSharedLink ? "text-xl font-bold" : "input"}`}
               required
             />
           </label>

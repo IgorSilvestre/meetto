@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import {useParams, useRouter, useSearchParams} from "next/navigation";
 import { LiveKitRoom, RoomAudioRenderer, ControlBar, GridLayout, ParticipantTile, Chat, useTracks, useParticipants, ParticipantName, LayoutContextProvider } from "@livekit/components-react";
 import "@livekit/components-styles/prefabs/index.css";
 import { Track } from "livekit-client";
@@ -31,6 +31,8 @@ function PeoplePanel() {
 }
 
 export default function RoomPage() {
+    const router = useRouter()
+
     const { room } = useParams<{ room: string }>();
     const roomName = decodeURIComponent(room ?? "");
     const searchParams = useSearchParams();
@@ -53,10 +55,7 @@ export default function RoomPage() {
     }, []);
 
     useEffect(() => {
-        if (!initialName && typeof window !== "undefined") {
-            const saved = window.localStorage.getItem("displayName");
-            if (saved) setParticipantName(saved);
-        }
+        if (!initialName) router.push(`/?room=${roomName}`)
         if (initialName && !token && !connecting) {
             void handleConnect();
         }
@@ -65,9 +64,8 @@ export default function RoomPage() {
 
     const shareUrl = useMemo(() => {
         const origin = typeof window !== "undefined" ? window.location.origin : "";
-        const base = `${origin}/room/${encodeURIComponent(roomName)}`;
-        return participantName ? `${base}?name=${encodeURIComponent(participantName)}` : base;
-    }, [roomName, participantName]);
+        return `${origin}/room/${encodeURIComponent(roomName)}`;
+    }, [roomName]);
 
     const handleCopyShare = useCallback(async () => {
         try {
@@ -93,7 +91,6 @@ export default function RoomPage() {
             const data: { token: string; wsUrl: string } = await res.json();
             setToken(data.token);
             setWsUrl(data.wsUrl);
-            try { window.localStorage.setItem("displayName", n); } catch {}
         } catch (e: unknown) {
             const msg = e instanceof Error ? e.message : "Failed to fetch token";
             setError(msg);
