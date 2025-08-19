@@ -1,34 +1,10 @@
 "use client"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import {useParams, useRouter, useSearchParams} from "next/navigation"
-import { LiveKitRoom, RoomAudioRenderer, ControlBar, GridLayout, ParticipantTile, Chat, useTracks, useParticipants, ParticipantName, LayoutContextProvider } from "@livekit/components-react"
+// @ts-expect-error
+import RoomContainer from "../../../containers/RoomContainer"
 import "@livekit/components-styles/prefabs/index.css"
-import { Track } from "livekit-client"
 
-function Stage() {
-    const tracks = useTracks([Track.Source.ScreenShare, Track.Source.Camera])
-    return (
-        <GridLayout tracks={tracks} className="h-full">
-            <ParticipantTile />
-        </GridLayout>
-    )
-}
-
-function PeoplePanel() {
-    const participants = useParticipants()
-    return (
-        <div className="stack p-3">
-            <div className="small muted">Participantes ({participants.length})</div>
-            <ul className="stack list-none p-0 m-0">
-                {participants.map((p) => (
-                    <li key={p.sid} className="row justify-between">
-                        <ParticipantName participant={p} />
-                    </li>
-                ))}
-            </ul>
-        </div>
-    )
-}
 
 export default function RoomPage() {
     const router = useRouter()
@@ -159,40 +135,7 @@ export default function RoomPage() {
                 </section>
             ) : (
                 <section className="flex-1 min-h-0">
-                    <LiveKitRoom
-                        token={token}
-                        serverUrl={wsUrl ?? undefined}
-                        connect
-                        options={{ publishDefaults: { simulcast: true }, dynacast: true, adaptiveStream: true }}
-                        data-lk-theme="default"
-                        style={{ height: "100%" }}
-                    >
-                        <LayoutContextProvider>
-                            <div className="meet-shell">
-                                <div className="meet-main">
-                                    <div className="meet-stage">
-                                        <Stage />
-                                    </div>
-                                    {showPeople && (
-                                        <aside className="meet-sidebar" aria-label="Painel de participantes">
-                                            <PeoplePanel />
-                                        </aside>
-                                    )}
-                                    {showChat && (
-                                        <aside className="meet-sidebar" aria-label="Painel de bate-papo">
-                                            <Chat />
-                                        </aside>
-                                    )}
-                                </div>
-                                <div className="meet-controls p-3 grid place-items-center">
-                                    <div className="rounded-xl border border-[--border] bg-[--background]/90 backdrop-blur px-3 py-2">
-                                        <ControlBar controls={{ chat: false, settings: true }} />
-                                    </div>
-                                </div>
-                            </div>
-                        </LayoutContextProvider>
-                        <RoomAudioRenderer />
-                    </LiveKitRoom>
+                    <RoomContainer token={token} serverUrl={wsUrl ?? undefined} />
                 </section>
             )}
         </div>
