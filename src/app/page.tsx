@@ -41,7 +41,7 @@ export default function Home() {
       <div style={{ width: "100%", maxWidth: 520 }}>
         <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 12 }}>Entre em uma reunião</h1>
         <p className="muted" style={{ marginBottom: 16 }}>
-          Digite o nome da sala e seu nome de usuário Compartilhe a URL da sala para que outras pessoas possam entrar
+          Digite o nome da sala e seu nome de usuário. <br /> Compartilhe a URL da sala para que outras pessoas possam entrar
         </p>
         <form onSubmit={onSubmit} className="stack">
           <label className="stack" htmlFor="room-input">
@@ -74,7 +74,7 @@ export default function Home() {
             Entrar na sala
           </button>
         </form>
-        <div className="small muted" style={{ marginTop: 16 }}>
+        <div className="small muted mt-8" style={{ marginTop: 16 }}>
           Depois de entrar, a URL da sua sala ficará assim: <code>/room/minha-sala?name=alice</code>
         </div>
       </div>
