@@ -1,7 +1,7 @@
 "use client"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import {useParams, useRouter, useSearchParams} from "next/navigation"
-// @ts-expect-error
+// @ts-ignore
 import RoomContainer from "../../../containers/RoomContainer"
 import "@livekit/components-styles/prefabs/index.css"
 
