@@ -13,7 +13,7 @@ export default function RoomPage() {
     const searchParams = useSearchParams()
     const initialName = (searchParams.get("name") || "").trim()
 
-    const [participantName, setParticipantName] = useState(initialName)
+    const [participantName] = useState(initialName)
     const [connecting, setConnecting] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [token, setToken] = useState<string | null>(null)
@@ -70,10 +70,11 @@ export default function RoomPage() {
         } catch (e: unknown) {
             const msg = e instanceof Error ? e.message : "Failed to fetch token"
             setError(msg)
+            console.error(error)
         } finally {
             setConnecting(false)
         }
-    }, [participantName, roomName])
+    }, [error, participantName, roomName])
 
     return (
         <>
